@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// API get issue list
 const pagesize = 10
 const username = 'loveraven1118'
 const repos = 'github-api'
@@ -38,10 +37,13 @@ export default {
       theadContent: []
     }
   },
+  mounted: function () {
+    this.getdatas(1)
+  },
   methods: {
     getdatas: function (page) {
       const url = 'https://api.github.com/repos/' + username + '/' + repos + '/issues?per_page=' + pagesize + '&page=' + page
-
+      this.theadContent = []
       fetch(url, config).then(response => response.json())
         .then(result => {
           for (var i = 0; i < result.length; i++) {
