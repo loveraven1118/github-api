@@ -6,12 +6,14 @@
         <tr>
           <th>Issue Number</th>
           <th>Issue Title</th>
+          <th>Label</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="content in theadContent" :key="content.number">
           <td>{{ content.number }}</td>
-          <td>{{ content.title }}</td>
+          <td><router-link :to="{ path: '/IssueDetail', query: { Id: content.number } }">{{ content.title }}</router-link></td>
+          <td>{{ content.label }}</td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +48,16 @@ export default {
       this.theadContent = []
       fetch(url, config).then(response => response.json())
         .then(result => {
-          for (var i = 0; i < result.length; i++) {
+          for (let i = 0; i < result.length; i++) {
+            const labels = result[i].labels
+            let label = ''
+            for (let j = 0; j < labels.length; j++) {
+              label = label + labels[j].name + '、'
+            }
             this.theadContent.push({
               number: result[i].number,
-              title: result[i].title
+              title: result[i].title,
+              label: label
             })
           }
         })
